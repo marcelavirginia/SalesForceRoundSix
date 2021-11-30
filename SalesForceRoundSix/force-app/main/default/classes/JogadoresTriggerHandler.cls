@@ -7,16 +7,26 @@ public with sharing class JogadoresTriggerHandler {
         }
     }
 
-    private static beforeUpdate(Jogador__c record, Map<Id, Jogador__c> recordOld)
+    private static void beforeUpdate(Jogador__c record, Jogador__c recordOld)
     {
-        if (isChanged(record.Eliminado__c, recordOld.Eliminado__c))
+        if (isChanged(record, recordOld, Jogador__c.Eliminado__c))
         {
-            record.DataMorte__c = System.now();
+            setValue(record, Jogador__c.DataMorte__c, System.now());
         }
     }
 
-    private static boolean isChanged(boolean value, boolean valueTocompare)
+    private static boolean isChanged(Jogador__c record, Jogador__c recordTocompare, Schema.SObjectField fieldToValued)
+    {
+        return  isChanged(record.get(fieldToValued), recordTocompare.get(fieldToValued));
+    }
+
+    private static boolean isChanged(Object value, Object valueTocompare)
     {
         return value != valueTocompare;
+    }
+
+    private static void setValue (Jogador__c record, SObjectField field, Object value)
+    {
+        record.put(field, value);
     }
 }
