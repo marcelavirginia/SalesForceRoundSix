@@ -1,22 +1,22 @@
-public without sharing class CandidatosCEPAlteradoBatchable implements Database.Batchable<SObject>, Database.Stateful {
+global  without sharing class CandidatosCEPAlteradoBatchable implements Database.Batchable<SObject>, Database.Stateful {
     
     private String query;
-    global String errorMessageHtml;
+    global   String errorMessageHtml;
 
-    global CandidatosCEPAlteradoBatchable()
+    global   CandidatosCEPAlteradoBatchable()
     {
         errorMessageHtml = '';
+        query = '';
         query = CandidatosSelector.getInstance().buildQuery();
     }
 
-    public Database.QueryLocator start(Database.BatchableContext BC) {
-        return Database.getQueryLocator(query);
+    global  Database.QueryLocator start(Database.BatchableContext BC) {
+        return Database.getQueryLocator(CandidatosSelector.getQueryLocatorCEPBatchable());
     }
   
     //TODO: atualizar o campo CEPAlterado__c para FALSE
-    public void execute(Database.BatchableContext BC, List<Candidato__c> scope) {
-        System.debug("Executou ")
-
+    global  void execute(Database.BatchableContext BC, List<Candidato__c> scope) {
+        System.debug('Executando a Bat');
         for (Candidato__c record : scope) {
             record.CEPAlterado__c = false;    
         }
@@ -29,6 +29,10 @@ public without sharing class CandidatosCEPAlteradoBatchable implements Database.
 
     }
   
+    global  void finish(Database.BatchableContext BC) {
+        sendLog();
+    }
+
     private void handleLog(List<Database.SaveResult> srList, List<Candidato__c> scope)
     {
         for (Integer i = 0; i < scope.size(); i++)
@@ -41,11 +45,11 @@ public without sharing class CandidatosCEPAlteradoBatchable implements Database.
                     errorMessageHtml += 'Mensagem: ' + err.getMessage() + '<br/>';
                 }
             }
+            else
+            {
+                errorMessageHtml += '====== [' + 'Sucesso ao atualizar o registro: ' + scope.get(i).Id + '] ====<br/>' ;
+            }
         }
-    }
-
-    public void finish(Database.BatchableContext BC) {
-        sendLog();
     }
 
     private void sendLog()
