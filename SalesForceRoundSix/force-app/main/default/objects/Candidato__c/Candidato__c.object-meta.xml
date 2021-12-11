@@ -149,7 +149,7 @@
     <description>Um candidato é uma pessoa que foi convidada para participar dos jogos, mas ainda não aceitou.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -161,6 +161,7 @@
     <label>Candidato</label>
     <nameField>
         <label>Nome do Candidato</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>

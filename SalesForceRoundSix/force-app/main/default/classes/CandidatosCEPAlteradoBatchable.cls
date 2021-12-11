@@ -19,6 +19,21 @@ public without sharing class CandidatosCEPAlteradoBatchable implements Database.
 
     }
   
+    private void handleLog(List<Database.SaveResult> srList, List<Candidato__c> scope)
+    {
+        for (Integer i = 0; i < scope.size(); i++)
+        {
+            if (!srList.get(i).isSuccess())
+            {
+                errorMessageHtml += '====== [' + 'Erro ao atualizar o registro: ' + scope.get(i).Id + '] ====<br/>' ;
+                for (Database.Error err: srList.get(i).getErrors())
+                {
+                    errorMessageHtml += 'Mensagem: ' + err.getMessage() + '<br/>';
+                }
+            }
+        }
+    }
+
     public void finish(Database.BatchableContext BC) {
         sendLog();
     }
