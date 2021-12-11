@@ -1,14 +1,24 @@
-public without sharing class CandidatosCEPAlteradoBatchable implements Database.Batchable<sObject> {
+public without sharing class CandidatosCEPAlteradoBatchable implements Database.Batchable<SObject>, Database.Stateful {
     
+    private String query;
+    global String errorMessageHtml;
+
+    global CandidatosCEPAlteradoBatchable()
+    {
+        errorMessageHtml = '';
+        query = CandidatosSelector.getInstance().buildQuery();
+    }
+
     public Database.QueryLocator start(Database.BatchableContext BC) {
-        return Database.getQueryLocator(CandidatosSelector.getQueryLocatorCEPBatchable());
+        return Database.getQueryLocator(query);
     }
   
     //TODO: atualizar o campo CEPAlterado__c para FALSE
     public void execute(Database.BatchableContext BC, List<Candidato__c> scope) {
-        
+        System.debug("Executou ")
+
         for (Candidato__c record : scope) {
-            record.Idade__c = 0;    
+            record.CEPAlterado__c = false;    
         }
 
         update scope;
