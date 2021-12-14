@@ -1,21 +1,31 @@
-public with sharing class RoundHandler {
+public without sharing class RoundHandler {
 
-    static    String MensagemHtml;
+    static String MensagemHtml;
 
     public static void execute() {
-
+        System.debug('RoundHandler_execute_Marcela'); 
         handleLog();
 
     }
 
     private static  void handleLog()
     {
+        System.debug('RoundHandler_handleLog_Marcela');
         List<Round__c> roundsAux = RoundsSelector.selectAllRounds();
      
-        for (Round__c round : roundsAux) {
-            MensagemHtml += 'Round: ' + round.Name + '<br/>';
-        }
+        for (Round__c  round : roundsAux) {
 
+            if (round != null)
+            {
+                MensagemHtml += 'Round: ' + round.Name + ' Vencedor: ' + round.Name + '<br/>';  
+                MensagemHtml += 'Partidas: ' + '<br/>';  
+
+                System.debug(round.Name); 
+
+            }
+
+        }
+       
         sendLog();
     }
 

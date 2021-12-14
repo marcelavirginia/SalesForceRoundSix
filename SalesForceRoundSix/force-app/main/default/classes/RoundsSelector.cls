@@ -1,8 +1,8 @@
-public with sharing class RoundsSelector {
+public without sharing class RoundsSelector {
 
     public static List<Round__c> selectAllRounds() {
-        return [
-            SELECT Id FROM Round__c WHERE Premio__c > 0
-        ];
+        return[SELECT  Id, Name, Vencedor__c, Premio__c, TotalJogadoresEminados__c FROM Round__c];
+       
     }
+
 }
