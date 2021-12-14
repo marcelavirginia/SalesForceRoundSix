@@ -3,32 +3,26 @@ public without sharing class RoundHandler {
     static String MensagemHtml;
 
     public static void execute() {
-        System.debug('RoundHandler_execute_Marcela'); 
-        handleLog();
+        System.debug('Relatório de Roud'); 
+        BuscaDadosRund();
+     }
 
-    }
-
-    private static  void handleLog()
+    private static void  BuscaDadosRund()
     {
-        System.debug('RoundHandler_handleLog_Marcela');
+        
         List<Round__c> roundsAux = RoundsSelector.selectAllRounds();
-     
-        for (Round__c  round : roundsAux) {
-
-            if (round != null)
-            {
-                MensagemHtml += 'Round: ' + round.Name + ' Vencedor: ' + round.Name + '<br/>';  
-                MensagemHtml += 'Partidas: ' + '<br/>';  
-
-                System.debug(round.Name); 
-
-            }
-
+        Partida__c[] partidaRound = [SELECT Id, Name, InicioPartida__c, TerminoPartida__c, NumeroJogadoresEliminados__c FROM Partida__c WHERE Round__c = : roundsAux[0].Id];
+        
+        MensagemHtml = 'Acompanhamento do Round' + roundsAux[0].Name + '<br/>';
+        
+        for(Integer i = 0; i < partidaRound.size(); i++)
+        {
+            MensagemHtml += 'Partida: ' + partidaRound[i].Name +  '   Jogadores Eliminados: ' + partidaRound[i].NumeroJogadoresEliminados__c + '<br/>';
+            
+            System.debug('Data Inicio: ' + partidaRound[i].NumeroJogadoresEliminados__c);
+            System.debug('record: ' + JSON.serialize(partidaRound[i]));
         }
-       
-        sendLog();
     }
-
 
     private static  void sendLog()
     {
