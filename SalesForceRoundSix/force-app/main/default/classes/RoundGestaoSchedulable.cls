@@ -1,7 +1,7 @@
 
-public class RoundSchedulable implements Schedulable {
+global  class RoundGestaoSchedulable implements Schedulable {
 
-    public void execute(SchedulableContext sc) {
+    global  void execute(SchedulableContext sc) {
         RoundHandler.execute();
     }
    
