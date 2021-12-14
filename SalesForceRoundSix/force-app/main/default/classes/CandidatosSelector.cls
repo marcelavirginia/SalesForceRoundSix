@@ -1,26 +1,7 @@
 public with sharing class CandidatosSelector extends Selector
 {
-    public CandidatosSelector() {
-
+    public static String getQueryLocatorCEPBatchable() {
+        return 'SELECT Id, Name FROM Candidato__c WHERE CEPAlterado__c = true ORDER BY Name ASC';
     }
-
-    private static CandidatosSelector instance = null;
-
-    public static CandidatosSelector getInstance()
-    {
-        if (instance == null) 
-        {
-            instance = new CandidatosSelector();
-        }
-
-        return instance;
-    }
-
-    public CandidatosSelector()
-    {
-        sObjType = Account.sObjectType;
-        fieldset = SObjectType.Candidato__c.FieldSets.Selector;
-    }
-
 
 }
