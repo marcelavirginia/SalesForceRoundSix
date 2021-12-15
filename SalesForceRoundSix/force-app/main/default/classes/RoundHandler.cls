@@ -4,17 +4,17 @@ public without sharing class RoundHandler {
 
     public static void execute() {
         System.debug('Relatório de Roud'); 
-        MontaRelatorioRund();
+        MontaMensagemRund();
         sendRel();
      }
 
-    private static void  MontaRelatorioRund()
+    private static void  MontaMensagemRund()
     {
         
         List<Round__c> roundsAux = RoundsSelector.selectAllRounds();
         List<Partida__c> partidaRound = PartidasSelector.selectAllPartidasRounds(roundsAux[0].Id);
-        
-        if (roundsAux.size() == 0)
+         
+        if (roundsAux.size() > 0)
         {
             MensagemHtml = 'Acompanhamento do Round' + '<br/>';
             MensagemHtml += 'Round: ' + roundsAux[0].Name + '<br/>';
