@@ -4,31 +4,39 @@ public without sharing class RoundHandler {
 
     public static void execute() {
         System.debug('Relatório de Roud'); 
-        BuscaDadosRund();
+        MontaRelatorioRund();
+        sendRel();
      }
 
-    private static void  BuscaDadosRund()
+    private static void  MontaRelatorioRund()
     {
         
         List<Round__c> roundsAux = RoundsSelector.selectAllRounds();
-        Partida__c[] partidaRound = [SELECT Id, Name, InicioPartida__c, TerminoPartida__c, NumeroJogadoresEliminados__c FROM Partida__c WHERE Round__c = : roundsAux[0].Id];
+        List<Partida__c> partidaRound = PartidasSelector.selectAllPartidasRounds(roundsAux[0].Id);
         
-        MensagemHtml = 'Acompanhamento do Round' + roundsAux[0].Name + '<br/>';
-        
-        for(Integer i = 0; i < partidaRound.size(); i++)
+        if (roundsAux.size() == 0)
         {
-            MensagemHtml += 'Partida: ' + partidaRound[i].Name +  '   Jogadores Eliminados: ' + partidaRound[i].NumeroJogadoresEliminados__c + '<br/>';
-            
-            System.debug('Data Inicio: ' + partidaRound[i].NumeroJogadoresEliminados__c);
-            System.debug('record: ' + JSON.serialize(partidaRound[i]));
+            MensagemHtml = 'Acompanhamento do Round' + '<br/>';
+            MensagemHtml += 'Round: ' + roundsAux[0].Name + '<br/>';
+            MensagemHtml += '----------------------------------------------' + '<br/>';
+
+            for (Partida__c record : partidaRound) {
+
+                MensagemHtml += 'Partida : ' + record.Name  + '<br/>';
+                System.debug('record: ' + JSON.serialize(record));
+            }
+        }
+        else {
+            System.debug('Nenhum round está em andamento!');
+            MensagemHtml = 'Nenhum round está em andamento!';
         }
     }
 
-    private static  void sendLog()
+    private static void sendRel()
     {
         Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
         message.setToAddresses(new List<String>{'marcelavirginia@gmail.com'});
-        message.setSubject('Log de erros');
+        message.setSubject('Acompanhamento de Round');
         message.setHtmlBody(MensagemHtml);
         List<Messaging.SingleEmailMessage> messages = new List<Messaging.SingleEmailMessage>{message};
         
